@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SlideAgent: Hierarchical Agentic Framework for Multi-Page Visual Document Understanding">
+  <meta name="keywords" content="SlideAgent, Multi-page Document Understanding, Visual Documents, Multimodal AI, Slide Decks">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SlideAgent: Hierarchical Agentic Framework for Multi-Page Visual Document Understanding</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./media/static/css/bulma.min.css">
+  <link rel="stylesheet" href="./media/static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./media/static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./media/static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./media/static/css/index.css">
+  <link rel="icon" href="./media/static/images/favicon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./media/static/js/fontawesome.all.min.js"></script>
+  <script src="./media/static/js/bulma-carousel.min.js"></script>
+  <script src="./media/static/js/bulma-slider.min.js"></script>
+  <script src="./media/static/js/index.js"></script>
+
+  <style>
+    /* Three image containers (use 25% for four, and 50% for two, etc) */
+    .imgcolumn {
+      float: left;
+      width: 50%;
+      padding: 10px
+    }
+
+    /* Clear floats after image containers */
+    .imgrow::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+
+    table.customTable {
+      width: 50%;
+      background-color: #FFFFFF;
+      border-collapse: collapse;
+      border-width: 2px;
+      border-color: rgb(214, 236, 244);
+      border-style: solid;
+      color: #000000;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    table.customTable td {
+      border-width: 2px;
+      border-color: rgb(214, 236, 244);
+      border-style: solid;
+      padding: 5px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    table.customTable th {
+      border-width: 2px;
+      border-color: rgb(214, 236, 244);
+      border-style: solid;
+      padding: 5px;
+    }
+
+    table.customTable thead {
+      background-color: rgb(214, 236, 244);
+    }
+
+    .example-image {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .feature-card {
+      background: white;
+      border: 3px solid;
+      border-image: linear-gradient(135deg, #8b9ef7 0%, #9d7ac7 100%) 1;
+      border-radius: 15px;
+      padding: 30px 20px;
+      text-align: center;
+      color: #333;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(139, 158, 247, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      display: block;
+      background: linear-gradient(135deg, #8b9ef7 0%, #9d7ac7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .methodology-step {
+      background: white;
+      border-left: 5px solid #8b9ef7;
+      padding: 25px;
+      margin: 20px 0;
+      border-radius: 0 10px 10px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .metric-card {
+      background: white;
+      border: 3px solid;
+      border-image: linear-gradient(45deg, #f093fb 0%, #f5576c 100%) 1;
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 10px 0;
+      transition: all 0.3s ease;
+    }
+
+    .metric-card:hover {
+      box-shadow: 0 10px 25px rgba(240, 147, 251, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .metric-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      display: block;
+      background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .highlight-box {
+      background: white;
+      border: 3px solid;
+      border-image: linear-gradient(135deg, #8b9ef7 0%, #9d7ac7 100%) 1;
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .highlight-box:hover {
+      box-shadow: 0 10px 25px rgba(139, 158, 247, 0.3);
+    }
+
+    .highlight-box h4 {
+      background: linear-gradient(135deg, #8b9ef7 0%, #9d7ac7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .agent-card {
+      background: #f8f9ff;
+      border: 2px solid #e0e7ff;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+      transition: all 0.3s ease;
+    }
+
+    .agent-card:hover {
+      border-color: #8b9ef7;
+      transform: scale(1.02);
+    }
+
+    .dataset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .dataset-card {
+      background: #f8f9ff;
+      border: 2px solid #e0e7ff;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .dataset-card:hover {
+      border-color: #8b9ef7;
+      transform: scale(1.02);
+    }
+
+    .teaser-image {
+      max-width: 90%;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .section {
+      padding: 3rem 1.5rem;
+    }
+
+    .section .title.is-3 {
+      margin-bottom: 1.5rem;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
+    }
+
+    @media screen and (max-width: 768px) {
+      table.customTable {
+        width: 100%;
+      }
+
+      .feature-card {
+        margin-bottom: 20px;
+      }
+
+      .metric-card {
+        margin-bottom: 15px;
+      }
+    }
+    </style>
+</head>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">SlideAgent: Hierarchical Agentic Framework for Multi-Page Visual Document Understanding</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://ahren09.github.io/">Yiqiao Jin</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/rachneet-kaur-a1ba5354/">Rachneet Kaur</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/zhenzengzz/">Zhen Zeng</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/sumitra-ganesh-0379853/">Sumitra Ganesh</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://faculty.cc.gatech.edu/~srijan/">Srijan Kumar</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Georgia Institute of Technology,</span>
+            <span class="author-block"><sup>2</sup>J.P. Morgan Research</span>
+          </div>
+
+          <div class="column has-text-centered" style="padding-top: 20px;">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper (Coming Soon)</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
+                  </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Multi-page visual documents such as manuals, brochures, presentations, and posters convey key information through layout, colors, icons, and cross-slide references. While large language models (LLMs) offer opportunities in document understanding, current systems struggle with complex, multi-page visual documents, particularly in fine-grained reasoning over elements and pages. We introduce <strong>SlideAgent</strong>, a versatile agentic framework for understanding <em>multi-modal</em>, <em>multi-page</em>, and <em>multi-layout</em> documents, especially slide decks.
+          </p>
+          <p>
+            SlideAgent employs specialized agents and decomposes reasoning into three specialized levels—<strong>global</strong>, <strong>page</strong>, and <strong>element</strong>—to construct a structured, <em>query-agnostic</em> representation that captures both overarching themes and detailed visual or textual cues. During inference, SlideAgent selectively activates specialized agents for multi-level reasoning and integrates their outputs into coherent, context-aware answers.
+          </p>
+          <p>
+            Extensive experiments show that SlideAgent achieves significant improvement over both proprietary (<strong>+7.9</strong> over GPT-4o) and open-source models (<strong>+9.8</strong> over InternVL3-8B).
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<!-- Teaser Figure -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Motivation</h2>
+          <img src="./media/figures/teaser.png" class="teaser-image" alt="Teaser Figure"/>
+          <p class="has-text-centered">
+            <em>When given the full page, the LLM miscounts the number of product mix categories. After isolating the chart, it correctly identifies all eight categories, highlighting the importance of accurate element parsing.</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Challenges in Multi-Page Document Understanding</h2>
+
+          <div class="methodology-step">
+            <h4 class="title is-4">1️⃣ Scalable Fine-Grained Reasoning</h4>
+            <p>State-of-the-art MLLMs process a limited number of images at once and tend to treat each page holistically, missing fine-grained, element-level cues required for user queries. GPT-4o miscounts chart segments on a cluttered page of a slide deck, but correctly identifies all segments once the relevant chart is cropped—highlighting the importance of element-level parsing.</p>
+          </div>
+
+          <div class="methodology-step">
+            <h4 class="title is-4">2️⃣ Domain-Specific Visual Semantics</h4>
+            <p>Most MLLMs are pre-trained on natural images, lacking exposure to domain-specific diagrams, financial charts, or scientific plots. In professional slide decks, visual elements carry specialized meanings: logos appear on every page for brand identity, color schemes encode categorical information (red for losses, green for gains), icons convey abstract concepts (lightbulbs for innovation, arrows for relationships), and spatial positioning signals importance.</p>
+          </div>
+
+          <div class="methodology-step">
+            <h4 class="title is-4">3️⃣ Metadata-Free Integration</h4>
+            <p>Many systems rely on clean metadata—figure locations, hierarchy tags, embedded text layers—that can be unavailable or corrupted in real-world PDFs. Users may take screenshots of PDF documents, scan physical documents, export slides as flattened PDFs, or use software that strips out document structure. SlideAgent addresses these by parsing only visual images without relying on metadata.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">SlideAgent Framework</h2>
+          <p>SlideAgent is an LLM-based agentic framework for fine-grained understanding of multi-page, varying-size visual documents. Inspired by human information processing models, SlideAgent employs a hierarchical architecture with specialized agents at three levels: <strong>global</strong> (document-wide topics), <strong>page</strong> (page-specific features and cross-page relations), and <strong>element</strong> (fine-grained components such as charts, figures, and text blocks).</p>
+
+          <img src="./media/figures/SlideAgent.jpg" class="example-image" alt="SlideAgent Framework Overview"/>
+          <p class="has-text-centered" style="margin-top: 10px;">
+            <em>SlideAgent generates knowledge about input slide decks in a hierarchical manner at 3 levels: global, page, and element.</em>
+          </p>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Two-Stage Pipeline</h2>
+
+          <div class="methodology-step">
+            <h4 class="title is-4">🔨 Stage 1: Knowledge Construction</h4>
+            <p>Build a hierarchical, <strong>query-agnostic</strong> knowledge base capturing global, page, and element knowledge.</p>
+
+            <div class="agent-card">
+              <h5><strong>Global Agent</strong></h5>
+              <p>Generates document-level knowledge, capturing the overall summary, objectives, and narrative flow of the document. Establishes overarching themes to support high-level reasoning about the document's purpose.</p>
+            </div>
+
+            <div class="agent-card">
+              <h5><strong>Page Agent</strong></h5>
+              <p>For each page, generates page-level knowledge conditioned on the page's visual content, global knowledge, and knowledge from the preceding page. Provides an intermediate representation that captures page-specific content while linking to global context.</p>
+            </div>
+
+            <div class="agent-card">
+              <h5><strong>Element Agent</strong></h5>
+              <p>Decomposes each page into elements using layout parsing pipeline. Integrates text detection, layout detection, and element classification. Generates element-level knowledge including semantic role, functional purpose, and relation to the slide page.</p>
+            </div>
+          </div>
+
+          <div class="methodology-step">
+            <h4 class="title is-4">⚡ Stage 2: Retrieval and Question-Answering</h4>
+            <p style="margin-bottom: 20px;">SlideAgent employs a sophisticated multi-step inference pipeline that activates specialized agents based on query requirements.</p>
+            <div class="columns">
+              <div class="column">
+                <strong>🔍 Query Classification</strong><br>
+                Classifies queries into categories (global understanding, fact-based, multi-hop reasoning, layout/visual)
+              </div>
+              <div class="column">
+                <strong>📝 Subquery Generation</strong><br>
+                Generates subqueries targeting key entities for improved retrieval
+              </div>
+              <div class="column">
+                <strong>🎯 Answer Synthesis</strong><br>
+                Combines reasoning from all activated agents into coherent answers
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Key Contributions</h2>
+          <div class="columns">
+            <div class="column is-one-third">
+              <div class="feature-card">
+                <i class="fas fa-layer-group feature-icon"></i>
+                <h4 class="title is-4">Hierarchical Reasoning</h4>
+                <p>Three-level architecture (global, page, element) mirrors human information processing for comprehensive understanding</p>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div class="feature-card">
+                <i class="fas fa-puzzle-piece feature-icon"></i>
+                <h4 class="title is-4">Fine-Grained Analysis</h4>
+                <p>Element-level parsing enables precise spatial reasoning and visual counting beyond page-level approaches</p>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div class="feature-card">
+                <i class="fas fa-file-image feature-icon"></i>
+                <h4 class="title is-4">Metadata-Free</h4>
+                <p>Works with pure visual inputs without relying on PDF metadata or document structure</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Performance Results</h2>
+          <p>SlideAgent consistently outperforms strong baselines across multiple datasets and evaluation metrics, demonstrating significant improvements in both end-to-end performance and reasoning with ground-truth pages.</p>
+
+          <div class="highlight-box">
+            <h4 class="title is-4">🏆 Key Results</h4>
+          </div>
+
+          <div class="columns">
+            <div class="column">
+              <div class="metric-card">
+                <span class="metric-number">+7.9</span>
+                <span class="metric-label">Improvement over GPT-4o</span>
+              </div>
+            </div>
+            <div class="column">
+              <div class="metric-card">
+                <span class="metric-number">+9.8</span>
+                <span class="metric-label">Improvement over InternVL3-8B</span>
+              </div>
+            </div>
+            <div class="column">
+              <div class="metric-card">
+                <span class="metric-number">+12.5</span>
+                <span class="metric-label">Numeric reasoning gain (SlideVQA)</span>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="title is-4" style="margin-top: 30px;">Performance Across Query Types</h4>
+          <div class="columns">
+            <div class="column is-half">
+              <img src="./media/figures/correctness_by_case_GPT-4o.png" class="example-image" alt="GPT-4o Performance by Query Type"/>
+              <p class="has-text-centered" style="margin-top: 10px;"><em>GPT-4o Base Model</em></p>
+            </div>
+            <div class="column is-half">
+              <img src="./media/figures/correctness_by_case_InternVL.png" class="example-image" alt="InternVL Performance by Query Type"/>
+              <p class="has-text-centered" style="margin-top: 10px;"><em>InternVL3-8B Base Model</em></p>
+            </div>
+          </div>
+          <p style="margin-top: 20px;">SlideAgent achieves the greatest improvement on <strong>multi-hop reasoning</strong> (+9.8 points) and <strong>visual/layout questions</strong> (+7.7 points), demonstrating the benefit of fine-grained element-level reasoning.</p>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Experimental Setup</h2>
+
+          <div class="highlight-box">
+            <h4 class="title is-4">📊 Evaluation Datasets</h4>
+          </div>
+
+          <div class="dataset-grid">
+            <div class="dataset-card">
+              <h5><strong>📄 Multi-Page VQA</strong></h5>
+              SlideVQA
+            </div>
+            <div class="dataset-card">
+              <h5><strong>💼 Technical Slides</strong></h5>
+              TechSlides
+            </div>
+            <div class="dataset-card">
+              <h5><strong>📈 Financial Slides</strong></h5>
+              FinSlides
+            </div>
+            <div class="dataset-card">
+              <h5><strong>📊 Infographics</strong></h5>
+              InfoVQA
+            </div>
+          </div>
+
+          <h4 class="title is-4">Models Evaluated</h4>
+          <div class="columns">
+            <div class="column">
+              <div class="methodology-step">
+                <h5>🔒 Proprietary Models</h5>
+                <p>GPT-4o, Gemini 2.0/2.5, Claude 3.7</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="methodology-step">
+                <h5>🔓 Open-Source Models</h5>
+                <p>Llama-3.2, InternVL3, Phi-3, Qwen2.5-VL</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="methodology-step">
+                <h5>📚 Multimodal RAG</h5>
+                <p>VisRAG, VDocRAG, COLPALI</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Ablation Study</h2>
+          <p>We analyze the contribution of each agent by systematically removing components. The page agent proves most critical, as it serves as the structural bridge between global themes and fine-grained details.</p>
+
+          <div class="columns" style="margin-top: 20px;">
+            <div class="column is-half">
+              <img src="./media/figures/GPT4o_Ablation_SlideVQA.png" class="example-image" alt="GPT-4o Ablation Study"/>
+              <p class="has-text-centered" style="margin-top: 10px;"><em>GPT-4o Ablation Results</em></p>
+            </div>
+            <div class="column is-half">
+              <img src="./media/figures/InternVL_Ablation_SlideVQA.png" class="example-image" alt="InternVL Ablation Study"/>
+              <p class="has-text-centered" style="margin-top: 10px;"><em>InternVL3-8B Ablation Results</em></p>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <h4>🔑 Key Insight</h4>
+            <p>Removing the page agent causes the steepest degradation (−6.3 for GPT-4o, −8.8 for InternVL3-8B), demonstrating its critical role in integrating global context with page-specific details and enabling cross-slide coherence.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Qualitative Analysis</h2>
+          <img src="./media/figures/SampleAnswer.png" class="example-image" alt="Example Answers"/>
+          <p class="has-text-centered" style="margin-top: 10px;">
+            <em>Example answers generated by SlideAgent. Agents at different levels work together to provide comprehensive responses with explicit provenance.</em>
+          </p>
+
+          <div class="methodology-step">
+            <h5>How Hierarchical Knowledge Enables Robust Reasoning</h5>
+            <p><strong>Global Agent:</strong> Performs deck-level triage and identifies relevant sections based on overall document themes.</p>
+            <p><strong>Page Agent:</strong> Pinpoints specific pages and their relationships, understanding page-to-page narrative flow.</p>
+            <p><strong>Element Agent:</strong> Grounds the answer by parsing fine-grained visual elements (charts, diagrams, text blocks) and extracting verbatim content.</p>
+            <p><strong>Answer Synthesizer:</strong> Fuses signals from all agents to return accurate answers with explicit provenance (page number, element type, visual grounding).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section" id="BibTeX" style="background-color: #f8f9ff;">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>TO BE ADDED
+</code></pre>
+  </div>
+</section>
+
+
+<section class="section" id="Acknowledgement">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Usage and License Notices</h2>
+    <p>
+      The data, code and model checkpoint are intended and licensed mainly for research.
+    </p>
+    <p>
+      This website is licensed under the <a rel="license"
+                                          href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+      Commons Attribution-ShareAlike 4.0 International License</a>.
+    </p>
+  </div>
+</section>
+
+</body>
+</html>

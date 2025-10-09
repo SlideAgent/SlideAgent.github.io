@@ -1,0 +1,10 @@
+*.lock
+*.sum
+*.DS_Store
+*/.DS_Store
+public/
+docs/
+scripts/
+python/
+*.log
+resources/_gen/
