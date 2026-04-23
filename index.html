@@ -293,7 +293,7 @@
 
           <div class="is-size-5 publication-authors" style="text-align: center;">
             <span class="author-block"><sup>1</sup>Georgia Institute of Technology,</span>
-            <span class="author-block"><sup>2</sup>J.P. Morgan Research</span>
+            <span class="author-block"><sup>2</sup>J.P. Morgan AI Research</span>
           </div>
 
           <div class="column has-text-centered" style="padding-top: 20px;">
@@ -353,13 +353,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Multi-page visual documents such as manuals, brochures, presentations, and posters convey key information through layout, colors, icons, and cross-slide references. While large language models (LLMs) offer opportunities in document understanding, current systems struggle with complex, multi-page visual documents, particularly in fine-grained reasoning over elements and pages. We introduce <strong>SlideAgent</strong>, a versatile agentic framework for understanding <em>multi-modal</em>, <em>multi-page</em>, and <em>multi-layout</em> documents, especially slide decks.
-          </p>
-          <p>
-            SlideAgent employs specialized agents and decomposes reasoning into three specialized levels—<strong>global</strong>, <strong>page</strong>, and <strong>element</strong>—to construct a structured, <em>query-agnostic</em> representation that captures both overarching themes and detailed visual or textual cues. During inference, SlideAgent selectively activates specialized agents for multi-level reasoning and integrates their outputs into coherent, context-aware answers.
-          </p>
-          <p>
-            Extensive experiments show that SlideAgent achieves significant improvement over both proprietary (<strong>+7.9</strong> over GPT-4o) and open-source models (<strong>+9.8</strong> over InternVL3-8B).
+            Multi-page visual documents such as manuals, brochures, presentations, and posters convey key information through layout, colors, icons, and cross-slide references. While multimodal large language models (MLLMs) offer opportunities in document understanding, current systems struggle with complex, multi-page visual documents, particularly in fine-grained reasoning over elements and pages. We introduce SlideAgent, a versatile agentic framework for understanding multi-modal, multi-page, and multi-layout documents, especially slide decks. SlideAgent employs specialized agents and decomposes reasoning into three specialized levels--global, page, and element--to construct a structured, query-agnostic representation that captures both overarching themes and detailed visual or textual cues. During inference, SlideAgent selectively activates specialized agents for multi-level reasoning and integrates their outputs into coherent, context-aware answers.Extensive experiments show that SlideAgent significantly improves accuracy over both proprietary (+7.9%) and open-source models (+9.8%). 
           </p>
         </div>
       </div>
@@ -680,8 +674,12 @@
 <section class="section" id="BibTeX" style="background-color: #f8f9ff;">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>TO BE ADDED
-</code></pre>
+    <pre><code>@inproceedings{jin2025slideagent,
+  title={SlideAgent: Hierarchical Agentic Framework for Multi-Page Visual Document Understanding},
+  author={Jin, Yiqiao and Kaur, Rachneet and Zeng, Zhen and Ganesh, Sumitra and Kumar, Srijan},
+  booktitle={ACL},
+  year={2026}
+}</code></pre>
   </div>
 </section>
 
